@@ -1,4 +1,8 @@
 import { OrderDTO } from '../dtos/order/OrderDTO.js';
+import { pool } from '../db/db.js';
+import { OrderRepository } from '../repositories/order.repository.js';
+
+const repository = new OrderRepository(pool);
 
 export class OrderService
 {
@@ -7,32 +11,33 @@ export class OrderService
 
     }
 
-    createOrder(orderDto)
+    async createOrder(orderDto)
     {
         console.log(`Creating order with params: ${JSON.stringify(orderDto, null, 2)}`);
-        return orderDto;
+        return await repository.CreateUpdateOrder(orderDto);
     }
 
-    updateOrder(orderDto)
+    async updateOrder(orderDto)
     {
         console.log(`Updating order with params: ${JSON.stringify(orderDto, null, 2)}`);
-        return orderDto;
+        return await repository.CreateUpdateOrder(orderDto);
     }
 
-    getOrder(orderId)
+    async getOrder(orderId)
     {
         console.log(`Detailing order ID ${orderId}`);
-        return { orderId: "v10089016vdb", value: 100, creationDate: "2023-07-19T12:24:11.529Z" };
+        return await repository.GetOrder(orderId);
     }
 
-    listOrders()
+    async listOrders()
     {
         console.log(`Listing all orders`);
-        return [{ orderId: "v10089016vdb", value: 100, creationDate: "2023-07-19T12:24:11.529Z" }];
+        return await repository.ListOrders();
     }
 
-    deleteOrder(orderId)
+    async deleteOrder(orderId)
     {
         console.log(`Deleting order ID ${orderId}`);
+        await repository.DeleteOrder(orderId);
     }
 }

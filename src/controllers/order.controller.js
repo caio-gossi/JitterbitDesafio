@@ -22,6 +22,7 @@ const orderService = new OrderService();
  *               - orderId
  *               - value
  *               - creationDate
+ *               - items
  *             properties:
  *               orderId:
  *                 type: string
@@ -33,6 +34,25 @@ const orderService = new OrderService();
  *                 type: string
  *                 format: date
  *                 example: "2023-07-19T12:24:11.529Z"
+ *               items:
+ *                 type: array
+ *                 description: Lista de itens no pedido
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - productId
+ *                     - quantity
+ *                     - price
+ *                   properties:
+ *                     productId:
+ *                       type: integer
+ *                       example: 2434
+ *                     quantity:
+ *                       type: integer
+ *                       example: 1
+ *                     price:
+ *                       type: number
+ *                       example: 1000
  *     responses:
  *       200:
  *         description: Pedido criado e retornado
@@ -49,8 +69,36 @@ const orderService = new OrderService();
  *                   type: string
  *                   example: ok
  */
-router.post('/', (req, res) => {
-    res.json(orderService.createOrder(req.body));
+router.post('/', async (req, res) => {
+    res.json(await orderService.createOrder(req.body));
+});
+
+/**
+ * @swagger
+ * /order/list:
+ *   get:
+ *     summary: Listar todos os pedidos
+ *     tags:
+ *       - Pedidos
+ *     description: Lista todos os pedidos
+ *     responses:
+ *       200:
+ *         description: Pedidos listados com sucesso
+ *       400:
+ *         description: Request mal-formada
+ *       500:
+ *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: ok
+ */
+router.get('/list', async (req, res) => {
+    res.json(await orderService.listOrders());
 });
 
 /**
@@ -84,36 +132,8 @@ router.post('/', (req, res) => {
  *                   type: string
  *                   example: ok
  */
-router.get('/:orderId', (req, res) => {
-    res.json(orderService.getOrder(req.params.orderId));
-});
-
-/**
- * @swagger
- * /order/list:
- *   get:
- *     summary: Listar todos os pedidos
- *     tags:
- *       - Pedidos
- *     description: Lista todos os pedidos
- *     responses:
- *       200:
- *         description: Pedidos listados com sucesso
- *       400:
- *         description: Request mal-formada
- *       500:
- *         description: Erro interno do servidor
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: string
- *                   example: ok
- */
-router.get('/list', (req, res) => {
-    res.json(orderService.listOrders());
+router.get('/:orderId', async (req, res) => {
+    res.json(await orderService.getOrder(req.params.orderId));
 });
 
 /**
@@ -134,6 +154,7 @@ router.get('/list', (req, res) => {
  *               - orderId
  *               - value
  *               - creationDate
+ *               - items
  *             properties:
  *               orderId:
  *                 type: string
@@ -145,6 +166,25 @@ router.get('/list', (req, res) => {
  *                 type: string
  *                 format: date
  *                 example: "2023-07-19T12:24:11.529Z"
+ *               items:
+ *                 type: array
+ *                 description: Lista de itens no pedido
+ *                 items:
+ *                   type: object
+ *                   required:
+ *                     - productId
+ *                     - quantity
+ *                     - price
+ *                   properties:
+ *                     productId:
+ *                       type: integer
+ *                       example: 2434
+ *                     quantity:
+ *                       type: integer
+ *                       example: 1
+ *                     price:
+ *                       type: number
+ *                       example: 1000
  *     responses:
  *       200:
  *         description: Pedido atualizado e dados retornados
@@ -161,8 +201,8 @@ router.get('/list', (req, res) => {
  *                   type: string
  *                   example: ok
  */
-router.put('/', (req, res) => {
-    res.json(orderService.updateOrder(req.body));
+router.put('/', async (req, res) => {
+    res.json(await orderService.updateOrder(req.body));
 });
 
 /**
@@ -196,8 +236,8 @@ router.put('/', (req, res) => {
  *                   type: string
  *                   example: ok
  */
-router.delete('/:orderId', (req, res) => {
-    orderService.deleteOrder(req.params.orderId);
+router.delete('/:orderId', async (req, res) => {
+    await orderService.deleteOrder(req.params.orderId);
     res.json({ status: 'ok' });
 });
 
