@@ -6,6 +6,8 @@ const router = express.Router();
  * /health:
  *   get:
  *     summary: Endpoint de health check
+ *     tags:
+ *       - Health check
  *     description: Retorna o status da API
  *     responses:
  *       200:

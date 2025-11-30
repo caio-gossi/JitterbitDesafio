@@ -25,24 +25,24 @@ const swaggerSpec = swaggerJsdoc
                 version: '1.0.0'
             }
         },
-        apis: ['./src/routes/*.js']
+        apis: ['./src/controllers/*.js']
     }
 );
 
 // Configure Swagger UI middleware
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Mount routes
-const routesPath = path.join(process.cwd(), 'src', 'routes');
+// Mount controllers
+const routesPath = path.join(process.cwd(), 'src', 'controllers');
 fs.readdirSync(routesPath).forEach((file) =>
     {
         if (file.endsWith('.js'))
         {
-            import(`./routes/${file}`)
+            import(`./controllers/${file}`)
             .then((module) =>
             {
                 const route = module.default;
-                const routeName = file.replace('.js', '');
+                const routeName = file.replace('.controller.js', '');
                 app.use(`/${routeName}`, route);
             })
         }
