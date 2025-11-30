@@ -1,5 +1,6 @@
 import express from 'express';
 import { OrderService } from '../services/order.service.js';
+import { ErrorHandler } from '../error/error.js';
 
 const router = express.Router();
 const orderService = new OrderService();
@@ -70,7 +71,14 @@ const orderService = new OrderService();
  *                   example: ok
  */
 router.post('/', async (req, res) => {
-    res.json(await orderService.createOrder(req.body));
+    try
+    {
+        res.json(await orderService.createOrder(req.body));
+    }
+    catch (error)
+    {
+        ErrorHandler(error, res);
+    }
 });
 
 /**
@@ -98,7 +106,14 @@ router.post('/', async (req, res) => {
  *                   example: ok
  */
 router.get('/list', async (req, res) => {
-    res.json(await orderService.listOrders());
+    try
+    {
+        res.json(await orderService.listOrders());
+    }
+    catch (error)
+    {
+        ErrorHandler(error, res);
+    }
 });
 
 /**
@@ -133,7 +148,14 @@ router.get('/list', async (req, res) => {
  *                   example: ok
  */
 router.get('/:orderId', async (req, res) => {
-    res.json(await orderService.getOrder(req.params.orderId));
+    try
+    {
+        res.json(await orderService.getOrder(req.params.orderId));
+    }
+    catch (error)
+    {
+        ErrorHandler(error, res);
+    }
 });
 
 /**
@@ -202,7 +224,14 @@ router.get('/:orderId', async (req, res) => {
  *                   example: ok
  */
 router.put('/', async (req, res) => {
-    res.json(await orderService.updateOrder(req.body));
+    try
+    {
+        res.json(await orderService.updateOrder(req.body));
+    }
+    catch (error)
+    {
+        ErrorHandler(error, res);
+    }
 });
 
 /**
@@ -237,8 +266,15 @@ router.put('/', async (req, res) => {
  *                   example: ok
  */
 router.delete('/:orderId', async (req, res) => {
-    await orderService.deleteOrder(req.params.orderId);
-    res.json({ status: 'ok' });
+    try
+    {
+        await orderService.deleteOrder(req.params.orderId);
+        res.json({ status: 'ok' });
+    }
+    catch (error)
+    {
+        ErrorHandler(error, res);
+    }
 });
 
 export default router;

@@ -1,3 +1,5 @@
+import { HttpError } from "../error/error.js";
+
 export class OrderRepository
 {
     #pool;
@@ -16,7 +18,7 @@ export class OrderRepository
         );
 
         if (result.rows.length != 0)
-            throw new Error("Order already exists");
+            throw new HttpError('Order already exists', 409);
 
         // Create
         const created = await this.#pool.query(
@@ -36,7 +38,7 @@ export class OrderRepository
         );
 
         if (result.rows.length == 0)
-            throw new Error("Order not found");
+            throw new HttpError('Order not found', 404);
         
         // Update
         const updated = await this.#pool.query(
@@ -56,7 +58,7 @@ export class OrderRepository
         );
 
         if (result.rows.length == 0)
-            throw new Error("Order not found");
+            throw new HttpError('Order not found', 404);
 
         return result.rows[0];
     }
@@ -73,6 +75,15 @@ export class OrderRepository
 
     async DeleteOrder(orderId)
     {
+        // Check if exists
+        const exists = await this.#pool.query(
+            'SELECT * FROM "public"."Order" WHERE orderId = $1',
+            [orderId]
+        );
+        
+        if (exists.rows.length == 0)
+            throw new HttpError('Order not found', 404);
+        
         // Delete order
         const result = await this.#pool.query(
             'DELETE FROM "public"."Order" WHERE orderId = $1',
@@ -117,7 +128,7 @@ export class OrderRepository
         );
 
         if (result.rows.length == 0)
-            throw new Error("Order item not found");
+            throw new HttpError('Order item not found', 404);
 
         return result.rows[0];
     }
@@ -135,6 +146,15 @@ export class OrderRepository
 
     async DeleteOrderItem(orderId, productId)
     {
+        // Check if exists
+        const exists = await this.#pool.query(
+            'SELECT * FROM "public"."Items" WHERE orderId = $1 AND productId = $2',
+            [orderId, productId]
+        );
+
+        if (exists.rows.length == 0)
+            throw new HttpError('Order item not found', 404);
+        
         // Delete order item
         const result = await this.#pool.query(
             'DELETE FROM "public"."Items" WHERE orderId = $1 AND productId = $2',

@@ -1,6 +1,7 @@
 import { OrderDTO } from '../dtos/order/OrderDTO.js';
 import { pool } from '../db/db.js';
 import { OrderRepository } from '../repositories/order.repository.js';
+import { HttpError } from '../error/error.js';
 
 const repository = new OrderRepository(pool);
 
@@ -19,6 +20,9 @@ export class OrderService
         let order = await repository.CreateOrder(orderDto);
         let updatedItems = [];
 
+        if (order == null)
+            throw new HttpError('Error creating order', 500);
+        
         // Create/update order items
         for (const item of orderDto.items)
             updatedItems.push(await repository.CreateUpdateItem(item, orderDto.orderId));
@@ -34,6 +38,9 @@ export class OrderService
         // Update order
         let order = await repository.UpdateOrder(orderDto);
         let updatedItems = [];
+
+        if (order == null)
+            throw new HttpError('Order not found', 404);
 
         // Create/update order items
         for (const item of orderDto.items)
