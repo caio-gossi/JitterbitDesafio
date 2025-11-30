@@ -23,6 +23,18 @@ const swaggerSpec = swaggerJsdoc
             {
                 title: 'API para o desafio da Jitterbit',
                 version: '1.0.0'
+            },
+            components:
+            {
+                securitySchemes:
+                {
+                    bearerAuth:
+                    {
+                        type: 'http',
+                        scheme: 'bearer',
+                        bearerFormat: 'JWT'
+                    }
+                }
             }
         },
         apis: ['./src/controllers/*.js']

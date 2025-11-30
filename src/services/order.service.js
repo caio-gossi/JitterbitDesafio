@@ -17,7 +17,7 @@ export class OrderService
         console.log(`Creating order with params: ${JSON.stringify(orderDto, null, 2)}`);
         
         // Create order
-        let order = await repository.CreateOrder(orderDto);
+        let order = await repository.createOrder(orderDto);
         let updatedItems = [];
 
         if (order == null)
@@ -25,7 +25,7 @@ export class OrderService
         
         // Create/update order items
         for (const item of orderDto.items)
-            updatedItems.push(await repository.CreateUpdateItem(item, orderDto.orderId));
+            updatedItems.push(await repository.createUpdateItem(item, orderDto.orderId));
 
         order.items = updatedItems;
         return order;
@@ -36,7 +36,7 @@ export class OrderService
         console.log(`Updating order with params: ${JSON.stringify(orderDto, null, 2)}`);
 
         // Update order
-        let order = await repository.UpdateOrder(orderDto);
+        let order = await repository.updateOrder(orderDto);
         let updatedItems = [];
 
         if (order == null)
@@ -44,7 +44,7 @@ export class OrderService
 
         // Create/update order items
         for (const item of orderDto.items)
-            updatedItems.push(await repository.CreateUpdateItem(item, orderDto.orderId));
+            updatedItems.push(await repository.createUpdateItem(item, orderDto.orderId));
 
         order.items = updatedItems;
         return order;
@@ -55,10 +55,10 @@ export class OrderService
         console.log(`Detailing order ID ${orderId}`);
 
         // Get order details
-        let order = await repository.GetOrder(orderId);
+        let order = await repository.getOrder(orderId);
         
         // Get order items
-        order.items = await repository.GetOrderItems(orderId);
+        order.items = await repository.getOrderItems(orderId);
 
         return order;
     }
@@ -68,10 +68,10 @@ export class OrderService
         console.log(`Listing all orders`);
 
         // Get orders
-        let orders = await repository.ListOrders();
+        let orders = await repository.listOrders();
 
         for (const order of orders)
-            order.items = await repository.GetOrderItems(order.orderid);
+            order.items = await repository.getOrderItems(order.orderid);
             
         return orders;
     }
@@ -80,13 +80,13 @@ export class OrderService
     {
         console.log(`Deleting order ID ${orderId}`);
 
-        let items = await repository.GetOrderItems(orderId);
+        let items = await repository.getOrderItems(orderId);
 
         // Delete order items
         for (const item of items)
-            await repository.DeleteOrderItem(orderId, item.productid);
+            await repository.deleteOrderItem(orderId, item.productid);
             
         // Delete order
-        await repository.DeleteOrder(orderId);
+        await repository.deleteOrder(orderId);
     }
 }

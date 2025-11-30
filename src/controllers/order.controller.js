@@ -1,14 +1,21 @@
 import express from 'express';
 import { OrderService } from '../services/order.service.js';
 import { ErrorHandler } from '../error/error.js';
+import { authMiddleware } from '../auth/auth.middleware.js';
 
+// Define router and services
 const router = express.Router();
 const orderService = new OrderService();
+
+// Use auth middleware
+router.use(authMiddleware());
 
 /**
  * @swagger
  * /order:
  *   post:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Criar novo pedido
  *     tags:
  *       - Pedidos
@@ -85,6 +92,8 @@ router.post('/', async (req, res) => {
  * @swagger
  * /order/list:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Listar todos os pedidos
  *     tags:
  *       - Pedidos
@@ -120,6 +129,8 @@ router.get('/list', async (req, res) => {
  * @swagger
  * /order/{orderId}:
  *   get:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Obter os dados de um pedido
  *     tags:
  *       - Pedidos
@@ -162,6 +173,8 @@ router.get('/:orderId', async (req, res) => {
  * @swagger
  * /order:
  *   put:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Atualizar um pedido
  *     tags:
  *       - Pedidos
@@ -238,6 +251,8 @@ router.put('/', async (req, res) => {
  * @swagger
  * /order/{orderId}:
  *   delete:
+ *     security:
+ *       - bearerAuth: []
  *     summary: Deletar um pedido
  *     tags:
  *       - Pedidos

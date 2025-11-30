@@ -9,7 +9,7 @@ export class OrderRepository
         this.#pool = pool;
     }
 
-    async CreateOrder(orderDto)
+    async createOrder(orderDto)
     {
         // Verify if exists
         const result = await this.#pool.query(
@@ -29,7 +29,7 @@ export class OrderRepository
         return created.rows[0];
     }
 
-    async UpdateOrder(orderDto)
+    async updateOrder(orderDto)
     {
         // Verify if exists
         const result = await this.#pool.query(
@@ -49,7 +49,7 @@ export class OrderRepository
         return updated.rows[0];
     }
 
-    async GetOrder(orderId)
+    async getOrder(orderId)
     {
         // Get order
         const result = await this.#pool.query(
@@ -63,7 +63,7 @@ export class OrderRepository
         return result.rows[0];
     }
 
-    async ListOrders()
+    async listOrders()
     {
         // List all orders
         const result = await this.#pool.query(
@@ -73,7 +73,7 @@ export class OrderRepository
         return result.rows;
     }
 
-    async DeleteOrder(orderId)
+    async deleteOrder(orderId)
     {
         // Check if exists
         const exists = await this.#pool.query(
@@ -91,7 +91,7 @@ export class OrderRepository
         );
     }
 
-    async CreateUpdateItem(itemDto, orderId)
+    async createUpdateItem(itemDto, orderId)
     {
         // Verify if exists
         const result = await this.#pool.query(
@@ -119,7 +119,7 @@ export class OrderRepository
         return updated.rows[0];
     }
 
-    async GetItem(orderId, productId)
+    async getItem(orderId, productId)
     {
         // Get order
         const result = await this.#pool.query(
@@ -133,7 +133,7 @@ export class OrderRepository
         return result.rows[0];
     }
 
-    async GetOrderItems(orderId)
+    async getOrderItems(orderId)
     {
         // Get order
         const result = await this.#pool.query(
@@ -144,7 +144,7 @@ export class OrderRepository
         return result.rows;
     }
 
-    async DeleteOrderItem(orderId, productId)
+    async deleteOrderItem(orderId, productId)
     {
         // Check if exists
         const exists = await this.#pool.query(
