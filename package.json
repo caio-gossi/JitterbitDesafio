@@ -1,0 +1,32 @@
+{
+  "name": "jitterbitdesafio",
+  "version": "1.0.0",
+  "description": "API criada para desafio da Jitterbit",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caio-gossi/JitterbitDesafio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/caio-gossi/JitterbitDesafio/issues"
+  },
+  "homepage": "https://github.com/caio-gossi/JitterbitDesafio#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
