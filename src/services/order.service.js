@@ -14,30 +14,72 @@ export class OrderService
     async createOrder(orderDto)
     {
         console.log(`Creating order with params: ${JSON.stringify(orderDto, null, 2)}`);
-        return await repository.CreateUpdateOrder(orderDto);
+        
+        // Create order
+        let order = await repository.CreateOrder(orderDto);
+        let updatedItems = [];
+
+        // Create/update order items
+        for (const item of orderDto.items)
+            updatedItems.push(await repository.CreateUpdateItem(item, orderDto.orderId));
+
+        order.items = updatedItems;
+        return order;
     }
 
     async updateOrder(orderDto)
     {
         console.log(`Updating order with params: ${JSON.stringify(orderDto, null, 2)}`);
-        return await repository.CreateUpdateOrder(orderDto);
+
+        // Update order
+        let order = await repository.UpdateOrder(orderDto);
+        let updatedItems = [];
+
+        // Create/update order items
+        for (const item of orderDto.items)
+            updatedItems.push(await repository.CreateUpdateItem(item, orderDto.orderId));
+
+        order.items = updatedItems;
+        return order;
     }
 
     async getOrder(orderId)
     {
         console.log(`Detailing order ID ${orderId}`);
-        return await repository.GetOrder(orderId);
+
+        // Get order details
+        let order = await repository.GetOrder(orderId);
+        
+        // Get order items
+        order.items = await repository.GetOrderItems(orderId);
+
+        return order;
     }
 
     async listOrders()
     {
         console.log(`Listing all orders`);
-        return await repository.ListOrders();
+
+        // Get orders
+        let orders = await repository.ListOrders();
+
+        for (const order of orders)
+            order.items = await repository.GetOrderItems(order.orderid);
+            
+        return orders;
     }
 
     async deleteOrder(orderId)
     {
         console.log(`Deleting order ID ${orderId}`);
+
+        let items = await repository.GetOrderItems(orderId);
+
+        // Delete order items
+        for (const item of items)
+            await repository.DeleteOrderItem(orderId, item.productid);
+            
+        // Delete order
         await repository.DeleteOrder(orderId);
     }
 }
