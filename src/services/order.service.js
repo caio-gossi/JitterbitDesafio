@@ -14,14 +14,14 @@ export class OrderService
 
     async createOrder(orderDto)
     {
-        console.log(`Creating order with params: ${JSON.stringify(orderDto, null, 2)}`);
+        console.log(`Criando pedido com parâmetros: ${JSON.stringify(orderDto, null, 2)}`);
         
         // Create order
         let order = await repository.createOrder(orderDto);
         let updatedItems = [];
 
         if (order == null)
-            throw new HttpError('Error creating order', 500);
+            throw new HttpError('Erro ao criar pedido', 500);
         
         // Create/update order items
         for (const item of orderDto.items)
@@ -33,14 +33,14 @@ export class OrderService
 
     async updateOrder(orderDto)
     {
-        console.log(`Updating order with params: ${JSON.stringify(orderDto, null, 2)}`);
+        console.log(`Atualizando pedido com parâmetros: ${JSON.stringify(orderDto, null, 2)}`);
 
         // Update order
         let order = await repository.updateOrder(orderDto);
         let updatedItems = [];
 
         if (order == null)
-            throw new HttpError('Order not found', 404);
+            throw new HttpError('Pedido não encontrado', 404);
 
         // Create/update order items
         for (const item of orderDto.items)
@@ -52,7 +52,7 @@ export class OrderService
 
     async getOrder(orderId)
     {
-        console.log(`Detailing order ID ${orderId}`);
+        console.log(`Detalhando pedido de ID ${orderId}`);
 
         // Get order details
         let order = await repository.getOrder(orderId);
@@ -65,7 +65,7 @@ export class OrderService
 
     async listOrders()
     {
-        console.log(`Listing all orders`);
+        console.log(`Listando todos os pedidos`);
 
         // Get orders
         let orders = await repository.listOrders();
@@ -78,7 +78,7 @@ export class OrderService
 
     async deleteOrder(orderId)
     {
-        console.log(`Deleting order ID ${orderId}`);
+        console.log(`Deletando pedido de ID ${orderId}`);
 
         let items = await repository.getOrderItems(orderId);
 

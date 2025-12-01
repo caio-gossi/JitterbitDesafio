@@ -18,7 +18,7 @@ export class OrderRepository
         );
 
         if (result.rows.length != 0)
-            throw new HttpError('Order already exists', 409);
+            throw new HttpError('Pedido já existe.', 409);
 
         // Create
         const created = await this.#pool.query(
@@ -38,7 +38,7 @@ export class OrderRepository
         );
 
         if (result.rows.length == 0)
-            throw new HttpError('Order not found', 404);
+            throw new HttpError('Pedido não encontrado.', 404);
         
         // Update
         const updated = await this.#pool.query(
@@ -58,7 +58,7 @@ export class OrderRepository
         );
 
         if (result.rows.length == 0)
-            throw new HttpError('Order not found', 404);
+            throw new HttpError('Pedido não encontrado.', 404);
 
         return result.rows[0];
     }
@@ -82,7 +82,7 @@ export class OrderRepository
         );
         
         if (exists.rows.length == 0)
-            throw new HttpError('Order not found', 404);
+            throw new HttpError('Pedido não encontrado.', 404);
         
         // Delete order
         const result = await this.#pool.query(
@@ -128,7 +128,7 @@ export class OrderRepository
         );
 
         if (result.rows.length == 0)
-            throw new HttpError('Order item not found', 404);
+            throw new HttpError('Item do pedido não encontrado.', 404);
 
         return result.rows[0];
     }
@@ -153,7 +153,7 @@ export class OrderRepository
         );
 
         if (exists.rows.length == 0)
-            throw new HttpError('Order item not found', 404);
+            throw new HttpError('Item do pedido não encontrado.', 404);
         
         // Delete order item
         const result = await this.#pool.query(

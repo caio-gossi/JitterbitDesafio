@@ -12,14 +12,10 @@ export class AuthService
     }
 
     login(username, password)
-    {
-        console.log(username);
-        console.log(password);
-
-        console.log("Logging in...");
-        
+    {        
+        // Stub for auth database implementation
         if (username !== "user" || password !== "user")
-            throw new HttpError('Incorrect credentials', 403);
+            throw new HttpError('Credenciais incorretas.', 403);
 
         return this.generateToken({ sub: username });
     }
@@ -29,7 +25,7 @@ export class AuthService
         const secret = process.env.JWT_SECRET;
 
         if (secret == null)
-            throw new HttpError('JWT secret not defined.', 500);
+            throw new HttpError('JWT secret não definido.', 500);
 
         const token = jwt.sign(
             payload,
@@ -48,7 +44,7 @@ export class AuthService
         const secret = process.env.JWT_SECRET;
 
         if (secret == null)
-            throw new HttpError('JWT secret not defined.', 500);
+            throw new HttpError('JWT secret não definido.', 500);
 
         try
         {
@@ -57,7 +53,7 @@ export class AuthService
         }
         catch (error)
         {
-            throw new HttpError('Invalid token', 401);
+            throw new HttpError('Token inválido', 401);
         }
         
         return true;
