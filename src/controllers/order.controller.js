@@ -27,18 +27,18 @@ router.use(authMiddleware());
  *           schema:
  *             type: object
  *             required:
- *               - orderId
- *               - value
- *               - creationDate
+ *               - numeroPedido
+ *               - valorTotal
+ *               - dataCriacao
  *               - items
  *             properties:
- *               orderId:
+ *               numeroPedido:
  *                 type: string
  *                 example: "v10089016vdb"
- *               value:
+ *               valorTotal:
  *                 type: number
  *                 example: 100
- *               creationDate:
+ *               dataCriacao:
  *                 type: string
  *                 format: date
  *                 example: "2023-07-19T12:24:11.529Z"
@@ -48,17 +48,17 @@ router.use(authMiddleware());
  *                 items:
  *                   type: object
  *                   required:
- *                     - productId
- *                     - quantity
- *                     - price
+ *                     - idItem
+ *                     - quantidadeItem
+ *                     - valorItem
  *                   properties:
- *                     productId:
+ *                     idItem:
  *                       type: integer
  *                       example: 2434
- *                     quantity:
+ *                     quantidadeItem:
  *                       type: integer
  *                       example: 1
- *                     price:
+ *                     valorItem:
  *                       type: number
  *                       example: 1000
  *     responses:
@@ -127,7 +127,7 @@ router.get('/list', async (req, res) => {
 
 /**
  * @swagger
- * /order/{orderId}:
+ * /order/{numeroPedido}:
  *   get:
  *     security:
  *       - bearerAuth: []
@@ -137,7 +137,7 @@ router.get('/list', async (req, res) => {
  *     description: Obtém os dados de um pedido
  *     parameters:
  *       - in: path
- *         name: orderId
+ *         name: numeroPedido
  *         required: true
  *         schema:
  *           type: string
@@ -158,10 +158,10 @@ router.get('/list', async (req, res) => {
  *                   type: string
  *                   example: ok
  */
-router.get('/:orderId', async (req, res) => {
+router.get('/:numeroPedido', async (req, res) => {
     try
     {
-        res.json(await orderService.getOrder(req.params.orderId));
+        res.json(await orderService.getOrder(req.params.numeroPedido));
     }
     catch (error)
     {
@@ -186,18 +186,18 @@ router.get('/:orderId', async (req, res) => {
  *           schema:
  *             type: object
  *             required:
- *               - orderId
- *               - value
- *               - creationDate
+ *               - numeroPedido
+ *               - valorTotal
+ *               - dataCriacao
  *               - items
  *             properties:
- *               orderId:
+ *               numeroPedido:
  *                 type: string
  *                 example: "v10089016vdb"
- *               value:
+ *               valorTotal:
  *                 type: number
  *                 example: 100
- *               creationDate:
+ *               dataCriacao:
  *                 type: string
  *                 format: date
  *                 example: "2023-07-19T12:24:11.529Z"
@@ -207,17 +207,17 @@ router.get('/:orderId', async (req, res) => {
  *                 items:
  *                   type: object
  *                   required:
- *                     - productId
- *                     - quantity
- *                     - price
+ *                     - idItem
+ *                     - quantidadeItem
+ *                     - valorItem
  *                   properties:
- *                     productId:
+ *                     idItem:
  *                       type: integer
  *                       example: 2434
- *                     quantity:
+ *                     quantidadeItem:
  *                       type: integer
  *                       example: 1
- *                     price:
+ *                     valorItem:
  *                       type: number
  *                       example: 1000
  *     responses:
@@ -249,7 +249,7 @@ router.put('/', async (req, res) => {
 
 /**
  * @swagger
- * /order/{orderId}:
+ * /order/{numeroPedido}:
  *   delete:
  *     security:
  *       - bearerAuth: []
@@ -259,7 +259,7 @@ router.put('/', async (req, res) => {
  *     description: Deleta um pedido
  *     parameters:
  *       - in: path
- *         name: orderId
+ *         name: numeroPedido
  *         required: true
  *         schema:
  *           type: string
@@ -280,10 +280,10 @@ router.put('/', async (req, res) => {
  *                   type: string
  *                   example: ok
  */
-router.delete('/:orderId', async (req, res) => {
+router.delete('/:numeroPedido', async (req, res) => {
     try
     {
-        await orderService.deleteOrder(req.params.orderId);
+        await orderService.deleteOrder(req.params.numeroPedido);
         res.json({ status: 'ok' });
     }
     catch (error)

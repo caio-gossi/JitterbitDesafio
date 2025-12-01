@@ -14,7 +14,7 @@ export class OrderRepository
         // Verify if exists
         const result = await this.#pool.query(
             'SELECT * FROM "public"."Order" O WHERE O.orderId = $1',
-            [orderDto.orderId]
+            [orderDto.numeroPedido]
         );
 
         if (result.rows.length != 0)
@@ -23,7 +23,7 @@ export class OrderRepository
         // Create
         const created = await this.#pool.query(
             'INSERT INTO "public"."Order" (orderId, value, creationDate) VALUES ($1, $2, $3) RETURNING *',
-            [orderDto.orderId, orderDto.value, orderDto.creationDate]
+            [orderDto.numeroPedido, orderDto.valorTotal, orderDto.dataCriacao]
         );
 
         return created.rows[0];
@@ -34,7 +34,7 @@ export class OrderRepository
         // Verify if exists
         const result = await this.#pool.query(
             'SELECT * FROM "public"."Order" O WHERE O.orderId = $1',
-            [orderDto.orderId]
+            [orderDto.numeroPedido]
         );
 
         if (result.rows.length == 0)
@@ -43,7 +43,7 @@ export class OrderRepository
         // Update
         const updated = await this.#pool.query(
             'UPDATE "public"."Order" SET value = $2, creationDate = $3 WHERE orderId = $1 RETURNING *',
-            [orderDto.orderId, orderDto.value, orderDto.creationDate]
+            [orderDto.numeroPedido, orderDto.valorTotal, orderDto.dataCriacao]
         );
 
         return updated.rows[0];
@@ -96,7 +96,7 @@ export class OrderRepository
         // Verify if exists
         const result = await this.#pool.query(
             'SELECT * FROM "public"."Items" I WHERE I.orderId = $1 AND I.productId = $2',
-            [orderId, itemDto.productId]
+            [orderId, itemDto.idItem]
         );
 
         if (result.rows.length == 0)
@@ -104,7 +104,7 @@ export class OrderRepository
             // Create
             const created = await this.#pool.query(
                 'INSERT INTO "public"."Items" (orderId, productId, quantity, price) VALUES ($1, $2, $3, $4) RETURNING *',
-                [orderId, itemDto.productId, itemDto.quantity, itemDto.price]
+                [orderId, itemDto.idItem, itemDto.quantidadeItem, itemDto.valorItem]
             );
 
             return created.rows[0];
@@ -113,7 +113,7 @@ export class OrderRepository
         // Update
         const updated = await this.#pool.query(
             'UPDATE "public"."Items" SET quantity = $3, price = $4 WHERE orderId = $1 AND productId = $2 RETURNING *',
-            [orderId, itemDto.productId, itemDto.quantity, itemDto.price]
+            [orderId, itemDto.idItem, itemDto.quantidadeItem, itemDto.valorItem]
         );
 
         return updated.rows[0];

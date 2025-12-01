@@ -25,7 +25,7 @@ export class OrderService
         
         // Create/update order items
         for (const item of orderDto.items)
-            updatedItems.push(await repository.createUpdateItem(item, orderDto.orderId));
+            updatedItems.push(await repository.createUpdateItem(item, orderDto.numeroPedido));
 
         order.items = updatedItems;
         return order;
@@ -44,7 +44,7 @@ export class OrderService
 
         // Create/update order items
         for (const item of orderDto.items)
-            updatedItems.push(await repository.createUpdateItem(item, orderDto.orderId));
+            updatedItems.push(await repository.createUpdateItem(item, orderDto.numeroPedido));
 
         order.items = updatedItems;
         return order;
